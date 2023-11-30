@@ -55,3 +55,11 @@ any = Parser $ \input ->
         case input of
             (char:chars) -> Right (char, chars)
             _ -> Left (ParserError "Expected: Char" "Found: EoF", input)
+
+-- | Creates a parser that matches the end-of-file marker.
+--
+-- This parser expects the input to be empty, producing an error otherwise.
+eofParser :: Parser [Char]
+eofParser = Parser (\input -> case input of
+                    []       -> Right ("", [])
+                    (char:_) -> Left (ParserError "Expected: EoF" ("Found: " ++ [char]), input))
