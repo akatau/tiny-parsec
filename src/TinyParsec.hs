@@ -106,3 +106,11 @@ choice description parsers = Prelude.foldr (<|>) (errorParser description "No ma
 -- | Similar to @choice@, but ensures that the list of parsers includes a default failure handler.
 choice' :: String -> [Parser a] -> Parser a
 choice' description parsers = chooseParser $ parsers ++ [errorParser description "No match."]
+
+-- | Repeatedly applies a parser zero or more times, collecting the results into a list.
+many, many1 :: Parser a -> Parser [a]
+many  p = many1 p <|> return []
+many1 p = do
+  first <- p
+  rest  <- many p
+  return (first:rest)
