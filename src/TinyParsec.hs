@@ -93,3 +93,8 @@ parser1 <|> parser2 = Parser $ \input ->
                                 case runParser parser1 input of
                                      Right a -> Right a
                                      Left (error, input) ->  runParser parser2 input 
+
+-- | Chooses the first parser from a list that successfully parses the input.
+chooseParser :: [Parser a] -> Parser a 
+chooseParser [parser] = parser
+chooseParser (firstParser:rest) = firstParser <|> chooseParser rest
