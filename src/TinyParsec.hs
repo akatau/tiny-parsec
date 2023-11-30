@@ -67,3 +67,14 @@ eofParser = Parser (\input -> case input of
 -- Useful for creating parsers that fail with specific error messages.
 errorParser :: String -> String -> Parser a
 errorParser expected found = Parser $ \input -> Left (ParserError expected found, input)
+
+
+-- | Parses the next character if it satisfies the given predicate.
+--
+-- Returns the character if it passes the test; otherwise, it reports an error.
+satisfyParser :: (Char -> Bool) -> Parser Char
+satisfyParser predicate = Parser $ \input ->
+                                  case runParser any input of
+                                       Right (char, restOfInput) -> if predicate char then Right (char, restOfInput) 
+                                                       else Left (ParserError "Expected: Char of certain property." ("Found: " ++[char]), input) 
+                                       Left a -> Left a
