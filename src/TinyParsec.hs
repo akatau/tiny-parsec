@@ -63,3 +63,7 @@ eofParser :: Parser [Char]
 eofParser = Parser (\input -> case input of
                     []       -> Right ("", [])
                     (char:_) -> Left (ParserError "Expected: EoF" ("Found: " ++ [char]), input))
+
+-- Useful for creating parsers that fail with specific error messages.
+errorParser :: String -> String -> Parser a
+errorParser expected found = Parser $ \input -> Left (ParserError expected found, input)
