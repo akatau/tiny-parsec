@@ -48,3 +48,10 @@ instance Monad Parser where
   parserA >>= f = Parser $ \input -> case runParser parserA input of
                                        Right (output, restOfInput) -> runParser (f output) restOfInput
                                        Left a -> Left a
+
+-- | A parser that attempts to consume any single character from the input.
+any :: Parser Char
+any = Parser $ \input ->
+        case input of
+            (char:chars) -> Right (char, chars)
+            _ -> Left (ParserError "Expected: Char" "Found: EoF", input)
