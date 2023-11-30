@@ -85,3 +85,11 @@ try parserA= Parser $ \input ->
                        case runParser parserA input of
                             Right a -> Right a
                             Left (error, output) -> Left (error, input)
+
+-- | Combines two parsers such that the first one is tried first. If it succeeds, its result is returned;
+--   otherwise, the second parser is attempted.
+(<|>) :: Parser a -> Parser a -> Parser a
+parser1 <|> parser2 = Parser $ \input ->
+                                case runParser parser1 input of
+                                     Right a -> Right a
+                                     Left (error, input) ->  runParser parser2 input 
