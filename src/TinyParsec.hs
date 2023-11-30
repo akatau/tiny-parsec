@@ -114,3 +114,8 @@ many1 p = do
   first <- p
   rest  <- many p
   return (first:rest)
+
+-- | Applies a parser between separators, collecting the results into a list.
+sepBy, sepBy1 :: Parser a -> Parser s -> Parser [a]
+sepBy  p s = sepBy1 p s <|> pure []
+sepBy1 p s = liftA2 (:) p $ many (s >> p)
