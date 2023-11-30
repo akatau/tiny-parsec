@@ -98,3 +98,11 @@ parser1 <|> parser2 = Parser $ \input ->
 chooseParser :: [Parser a] -> Parser a 
 chooseParser [parser] = parser
 chooseParser (firstParser:rest) = firstParser <|> chooseParser rest
+
+-- | Provides a choice among several parsers, returning an error message if none succeed.
+choice :: String -> [Parser a] -> Parser a
+choice description parsers = Prelude.foldr (<|>) (errorParser description "No match") parsers
+
+-- | Similar to @choice@, but ensures that the list of parsers includes a default failure handler.
+choice' :: String -> [Parser a] -> Parser a
+choice' description parsers = chooseParser $ parsers ++ [errorParser description "No match."]
