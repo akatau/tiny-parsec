@@ -78,3 +78,10 @@ satisfyParser predicate = Parser $ \input ->
                                        Right (char, restOfInput) -> if predicate char then Right (char, restOfInput) 
                                                        else Left (ParserError "Expected: Char of certain property." ("Found: " ++[char]), input) 
                                        Left a -> Left a
+
+-- | Tries to apply the first parser, but if it fails, tries the second one instead.
+try :: Parser a -> Parser a
+try parserA= Parser $ \input -> 
+                       case runParser parserA input of
+                            Right a -> Right a
+                            Left (error, output) -> Left (error, input)
