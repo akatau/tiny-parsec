@@ -41,3 +41,10 @@ instance Applicative Parser where
                                    Right (f, restOfInput) -> runParser (fmap f parserA) restOfInput
                                    Left a                 -> Left a
                                  )
+
+-- | Monad instance for the @Parser@ type.
+instance Monad Parser where
+  return x = Parser $ \input -> Right (x, input)
+  parserA >>= f = Parser $ \input -> case runParser parserA input of
+                                       Right (output, restOfInput) -> runParser (f output) restOfInput
+                                       Left a -> Left a
