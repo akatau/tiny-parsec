@@ -19,8 +19,16 @@ This module provides definitions for the monadic parser comibnators available in
 -- providing detailed feedback on parsing failures.
 data ParserError = ParserError {getExpected :: String, getFound :: String}
     deriving Show
-
+ 
 -- | A parser that consumes input and produces either a result or an error.
 -- 
 -- The @Parser@ type is parameterized over the type of the parsed output.
 newtype Parser output = Parser {runParser :: [Char] -> Either (ParserError, [Char]) (output, [Char])}
+
+-- | Functor instance for the @Parser@ type.
+instance Functor Parser where
+    fmap f parserA = Parser (\input ->
+                              case runParser parserA input of
+                              Right (output, restOfInput) -> Right (f output, restOfInput)
+                              Left a -> Left a
+                              )
