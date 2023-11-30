@@ -32,3 +32,12 @@ instance Functor Parser where
                               Right (output, restOfInput) -> Right (f output, restOfInput)
                               Left a -> Left a
                               )
+
+-- | Applicative instance for the @Parser@ type.
+instance Applicative Parser where
+    pure x = Parser (\input -> Right (x, input))
+    parserF <*> parserA = Parser (\input -> 
+                                   case runParser parserF input of
+                                   Right (f, restOfInput) -> runParser (fmap f parserA) restOfInput
+                                   Left a                 -> Left a
+                                 )
