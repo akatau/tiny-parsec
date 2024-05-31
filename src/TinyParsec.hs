@@ -3,13 +3,13 @@ module TinyParsec where
 {- |
 Module      : TinyParsec
 Description : Minimal parsing library using monadic parser combinators in Haskell  
-Copyright   : (c) Amr Farid Almorsi, 2023
+Copyright   : (c) Amr Almorsi, 2023
 License     : BSD3
 Maintainer : amrfalmorsi@gmail.com
 Stability   : experimental
 Portability : POSIX
 
-This module provides definitions for the monadic parser comibnators available in TinyParec.
+This module provides definitions for the monadic parser combinators available in TinyParsec.
 -}
 
 
