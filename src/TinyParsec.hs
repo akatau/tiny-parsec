@@ -74,7 +74,7 @@ errorParser expected found = Parser $ \input -> Left (ParserError expected found
 -- Returns the character if it passes the test; otherwise, it reports an error.
 satisfyParser :: (Char -> Bool) -> Parser Char
 satisfyParser predicate = Parser $ \input ->
-                                  case runParser any input of
+                                  case runParser TinyParsec.any input of
                                        Right (char, restOfInput) -> if predicate char then Right (char, restOfInput) 
                                                        else Left (ParserError "Expected: Char of certain property." ("Found: " ++[char]), input) 
                                        Left a -> Left a
